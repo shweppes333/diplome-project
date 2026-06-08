@@ -1,0 +1,96 @@
+* {
+    font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+}
+
+body {
+    background-color: #fdf8f0;
+    color: #000000;
+}
+
+.bg-cream {
+    background-color: #f9f2e3;
+}
+
+.bg-beige-card {
+    background-color: #f7ebd0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bg-beige-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+}
+
+.btn-primary-custom {
+    background-color: #b47c4a;
+    border-color: #a06c3c;
+    color: white;
+}
+
+.btn-primary-custom:hover {
+    background-color: #9b623a;
+    border-color: #8b552f;
+    color: white;
+}
+
+.btn-outline-custom {
+    border-color: #b47c4a;
+    color: #b47c4a;
+}
+
+.btn-outline-custom:hover {
+    background-color: #b47c4a;
+    color: white;
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    background-color: #f7ebd0;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.03);
+}
+
+.banner {
+    background: linear-gradient(135deg, #eedfc7, #f7e9da);
+    border-radius: 32px;
+}
+
+.map-container {
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+    height: 300px;
+    background: #e7d9c2;
+}
+
+.cart-summary {
+    background-color: #f9f2e3;
+    border-radius: 24px;
+    padding: 1.5rem;
+}
+
+.form-control, .form-select {
+    background-color: #fffcf7;
+    border: 1px solid #e0cfb4;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #b47c4a;
+    box-shadow: 0 0 0 0.2rem rgba(180,124,74,0.25);
+}
+
+.auth-card {
+    max-width: 480px;
+    margin: 2rem auto;
+}
+
+.product-img-placeholder {
+    background-color: #e9dccd;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    font-size: 3rem;
+    color: #a9845c;
+}
