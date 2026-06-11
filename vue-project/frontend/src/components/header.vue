@@ -2,62 +2,123 @@
   <nav class="navbar navbar-expand-lg navbar-light py-3 px-4 shadow-sm" style="background-color: #f1e2c9;">
     <div class="container">
       <router-link to="/" class="navbar-brand fs-3 fw-semibold" style="color:#3a2c1f;">
-        <i class="bi bi-scissors"></i> Тепло рук
+        <i class="bi bi-scissors"></i> HandMadeStudio
       </router-link>
+
       <div class="ms-auto d-flex gap-3 align-items-center">
-        <router-link v-if="isAuthenticated" to="/cart" class="btn btn-outline-custom rounded-pill px-3 position-relative">
+    
+        <router-link v-if="isAuthenticated" to="/cart" class="btn btn-outline-custom rounded-pill px-3">
           <i class="bi bi-bag fs-5"></i> Корзина
-          <span v-if="cartItemsCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
-            {{ cartItemsCount }}
-          </span>
         </router-link>
-        
-        <div v-if="!isAuthenticated">
-          <router-link to="/auth" class="btn btn-light me-2 rounded-pill px-3 border">Вход</router-link>
-          <router-link to="/register" class="btn btn-primary-custom rounded-pill px-3">Регистрация</router-link>
-        </div>
-        
-        <div v-else class="dropdown">
-          <button class="btn btn-light dropdown-toggle rounded-pill px-3" type="button" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle"></i> {{ currentUserName }}
+
+      
+        <template v-if="!isAuthenticated">
+          <router-link to="/auth" class="btn btn-light rounded-pill px-4 border">
+            <i class="bi bi-box-arrow-in-right"></i> Войти
+          </router-link>
+          <router-link to="/register" class="btn btn-primary-custom rounded-pill px-4">
+            <i class="bi bi-person-plus"></i> Регистрация
+          </router-link>
+        </template>
+
+     
+        <template v-if="isAuthenticated">
+          <span class="text-dark">
+            <i class="bi bi-person-circle"></i> {{ userName }}
+          </span>
+          <button @click="logout" class="btn btn-danger rounded-pill px-4">
+            <i class="bi bi-box-arrow-right"></i> Выйти
           </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#" @click.prevent="logout">Выйти</a></li>
-          </ul>
-        </div>
+        </template>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
-import { computed } from 'vue'
 import { useAuthStore } from '../store/auth.js'
 
 export default {
   name: 'Header',
-  setup() {
-    const authStore = useAuthStore()
-    
-    const isAuthenticated = computed(() => authStore.isAuthenticated)
-    const currentUserName = computed(() => authStore.currentUser?.name || authStore.currentUser?.login || '')
-    
-    const cartItemsCount = computed(() => {
-      if (!authStore.isAuthenticated) return 0
-      const cart = JSON.parse(localStorage.getItem('handmade_cart') || '[]')
-      return cart.reduce((cnt, it) => cnt + (it.quantity || 1), 0)
-    })
-    
-    const logout = () => {
-      authStore.logout()
-    }
-    
+  data() {
     return {
-      isAuthenticated,
-      currentUserName,
-      cartItemsCount,
-      logout
+      isAuthenticated: false,
+      userName: ''
+    }
+  },
+  mounted() {
+    this.checkAuth()
+   
+    window.addEventListener('storage', this.checkAuth)
+  },
+  beforeUnmount() {
+    window.removeEventListener('storage', this.checkAuth)
+  },
+  methods: {
+    checkAuth() {
+      const token = localStorage.getItem('token')
+      const user = localStorage.getItem('user')
+      
+      this.isAuthenticated = !!(token && user)
+      
+      if (user) {
+        try {
+          const userData = JSON.parse(user)
+          this.userName = userData.name || userData.login || ''
+        } catch(e) {
+          this.userName = ''
+        }
+      }
+    },
+    logout() {
+      if (confirm('Выйти из аккаунта?')) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('handmade_cart')
+        this.isAuthenticated = false
+        this.userName = ''
+        this.$router.push('/')
+        window.location.reload() 
+      }
     }
   }
 }
 </script>
+
+<style scoped>
+.btn-outline-custom {
+  border: 1px solid #b47c4a;
+  color: #b47c4a;
+  background: transparent;
+}
+
+.btn-outline-custom:hover {
+  background-color: #b47c4a;
+  color: white;
+}
+
+.btn-primary-custom {
+  background-color: #b47c4a;
+  border-color: #a06c3c;
+  color: white;
+}
+
+.btn-primary-custom:hover {
+  background-color: #9b623a;
+  color: white;
+}
+
+.btn-light {
+  background-color: #fffcf7;
+  border: 1px solid #e0cfb4;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+</style>

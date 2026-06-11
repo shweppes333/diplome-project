@@ -121,10 +121,12 @@ func RemoveFromCart(c *gin.Context) {
         return
     }
 
+ 
     result, err := database.DB.Exec(`
         DELETE FROM cart
         WHERE user_id = $1 AND product_id = $2`,
         userID, productID)
+    
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка удаления товара"})
         return

@@ -9,18 +9,15 @@
       </router-link>
     </div>
     
-    <!-- Товары -->
-    <h2 class="mb-4">✨ Популярные товары</h2>
+  
+    <h2 class="mb-4"> Популярные товары</h2>
     <div class="row g-4 mb-5">
       <div class="col-md-6 col-lg-3" v-for="product in products" :key="product.id">
         <ProductCard :product="product" />
       </div>
     </div>
     
-    <!-- Карта -->
-    <h2 class="mb-3">📍 Наша мастерская на карте</h2>
-    <MapComponent />
-    <p class="text-muted small mt-2">г. Москва, м. Курская, ул. Казакова 8, строение 2 (вход со двора)</p>
+    
   </div>
 </template>
 
